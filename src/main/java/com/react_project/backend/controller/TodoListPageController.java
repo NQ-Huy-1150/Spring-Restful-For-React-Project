@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/auth/v1")
 public class TodoListPageController {
     private final TodoListService todoListService;
 
@@ -35,8 +35,7 @@ public class TodoListPageController {
                 dto.setContent(todo.getContent());
                 dto.setChecked(todo.getChecked());
                 return dto;
-            })
-                    .toList());
+            }).toList());
             return ResponseEntity.ok().body(response);
         } else
             return ResponseEntity.badRequest().body(todosDTO);

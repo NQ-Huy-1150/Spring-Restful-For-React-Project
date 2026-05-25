@@ -7,10 +7,15 @@ public class UserDTO {
     @Size(min = 3, message = "FirstName phải có tối thiểu 3 kí tự !")
     private String firstName;
     private String lastName;
+    @Size(min = 5, message = "username phải có tối thiểu 5 kí tự !")
+    private String username;
 
     @Email(message = "Email không hợp lệ !", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
     private String password;
+
+    @Size(min = 10, message = "phone number not valid")
+    private String phoneNumber;
 
     @Size(min = 3, message = "ConfirmPassword phải có tối thiểu 3 kí tự !")
     private String confirmPassword;
@@ -53,6 +58,22 @@ public class UserDTO {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
 }

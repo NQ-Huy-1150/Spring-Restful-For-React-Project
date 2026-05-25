@@ -22,20 +22,24 @@ public class User {
     private int id;
     @NotEmpty
     @NotNull
+    private String username;
+
+    @NotEmpty
     @Size(min = 4, message = "Full name must greater than 4 character")
     private String fullName;
-    @NotNull
+    @NotEmpty
     @Email(message = "Email not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
     @Size(min = 10, message = "phone number not valid")
     private String phoneNumber;
     @NotEmpty
-    @NotNull
     @Size(min = 4, message = "Password length must greater than 4")
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     // user one-to-many todolist
     private List<TodoList> todoLists;
+
+    private boolean isAdmin;
 
     public int getId() {
         return id;
@@ -43,6 +47,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFullName() {
@@ -83,6 +95,14 @@ public class User {
 
     public void setTodoLists(List<TodoList> todoLists) {
         this.todoLists = todoLists;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
 }

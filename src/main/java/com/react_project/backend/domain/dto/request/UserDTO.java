@@ -1,4 +1,4 @@
-package com.react_project.backend.domain.dto;
+package com.react_project.backend.domain.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -19,6 +19,8 @@ public class UserDTO {
 
     @Size(min = 3, message = "ConfirmPassword phải có tối thiểu 3 kí tự !")
     private String confirmPassword;
+
+    private boolean isAdmin;
 
     public String getFirstName() {
         return firstName;
@@ -74,6 +76,14 @@ public class UserDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
 }

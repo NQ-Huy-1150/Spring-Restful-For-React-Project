@@ -21,10 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
-    private final JwtUtil jwtUtil;
+    private final JwtUtils jwtUtil;
     private final CustomUserDetailService customUserDetailService;
 
-    public AuthTokenFilter(JwtUtil jwtUtil, CustomUserDetailService customUserDetailService) {
+    public AuthTokenFilter(JwtUtils jwtUtil, CustomUserDetailService customUserDetailService) {
         this.jwtUtil = jwtUtil;
         this.customUserDetailService = customUserDetailService;
     }

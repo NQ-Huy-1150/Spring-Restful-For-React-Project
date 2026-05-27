@@ -3,7 +3,7 @@ package com.react_project.backend.service;
 import org.springframework.stereotype.Service;
 
 import com.react_project.backend.domain.User;
-import com.react_project.backend.domain.dto.UserDTO;
+import com.react_project.backend.domain.dto.request.UserDTO;
 import com.react_project.backend.repository.UserRepository;
 
 @Service
@@ -35,5 +35,9 @@ public class UserService {
     public User handleSaveUser(User user) {
         user = this.userRepository.save(user);
         return user;
+    }
+
+    public boolean isEmailExisted(String email) {
+        return this.userRepository.existsByEmail(email);
     }
 }

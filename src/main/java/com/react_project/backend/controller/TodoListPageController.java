@@ -3,8 +3,8 @@ package com.react_project.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.react_project.backend.domain.TodoList;
-import com.react_project.backend.domain.dto.TodoDTO;
-import com.react_project.backend.domain.dto.TodoListDTO;
+import com.react_project.backend.domain.dto.request.TodoDTO;
+import com.react_project.backend.domain.dto.request.TodoListDTO;
 import com.react_project.backend.service.TodoListService;
 
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/auth/v1")
+@RequestMapping("/api/v1")
 public class TodoListPageController {
     private final TodoListService todoListService;
 

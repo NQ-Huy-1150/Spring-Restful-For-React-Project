@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 
 import com.react_project.backend.domain.TodoList;
 import com.react_project.backend.domain.User;
-import com.react_project.backend.domain.dto.TodoListDTO;
+import com.react_project.backend.domain.dto.request.TodoListDTO;
 import com.react_project.backend.repository.TodoListRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TodoListService {
@@ -33,6 +35,7 @@ public class TodoListService {
         return todoList;
     }
 
+    @Transactional
     public TodoList handleSaveTodoList(TodoListDTO todoListDTO) {
         TodoList todos = handleConvertDTO(todoListDTO);
         if (todos != null) {

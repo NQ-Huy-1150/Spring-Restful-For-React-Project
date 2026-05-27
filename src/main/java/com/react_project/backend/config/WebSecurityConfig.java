@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,10 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.react_project.backend.security.AuthEntryPointJwt;
 import com.react_project.backend.security.AuthTokenFilter;
-import com.react_project.backend.security.JwtUtil;
+import com.react_project.backend.security.JwtUtils;
 import com.react_project.backend.service.CustomUserDetailService;
 
 @Configuration
+@EnableMethodSecurity
 public class WebSecurityConfig {
     private final CustomUserDetailService userDetailService;
     private final AuthEntryPointJwt authEntryPointJwt;
@@ -28,7 +30,7 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter(
-            JwtUtil jwtUtil,
+            JwtUtils jwtUtil,
             CustomUserDetailService customUserDetailService) {
         return new AuthTokenFilter(jwtUtil, customUserDetailService);
     }
@@ -45,7 +47,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtUtil jwtUtil,
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtUtils jwtUtil,
             CustomUserDetailService customUserDetailService)
             throws Exception {
         http
@@ -54,11 +56,7 @@ public class WebSecurityConfig {
                 // Configure endpoint authorization
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
-                        .requestMatchers("/auth/v1/**", "/hello", "/auth/v1/create-todolist").permitAll()
-
-                        // Role-based endpoints
-                        .requestMatchers("/auth/user/**").hasAuthority("ROLE_USER")
-                        .requestMatchers("/auth/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/v1/auth/**", "/test/hello", "/api/v1/**").permitAll()
 
                         // All other endpoints require authentication
                         .anyRequest().authenticated())

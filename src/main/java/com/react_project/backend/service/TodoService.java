@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.react_project.backend.domain.Todo;
 import com.react_project.backend.domain.TodoList;
-import com.react_project.backend.domain.dto.TodoDTO;
+import com.react_project.backend.domain.dto.request.TodoDTO;
 import com.react_project.backend.repository.TodoRepository;
 
 @Service

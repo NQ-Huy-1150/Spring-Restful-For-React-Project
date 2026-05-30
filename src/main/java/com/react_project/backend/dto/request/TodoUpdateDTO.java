@@ -1,4 +1,4 @@
-package com.react_project.backend.domain.dto.request;
+package com.react_project.backend.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -1,19 +1,19 @@
-package com.react_project.backend.domain.dto.request;
+package com.react_project.backend.dto.request;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class TodolistUpdateDTO {
+public class TodoListDTO {
     private int id;
     private String title;
     @NotNull
     @Valid
     @NotEmpty
-    private List<TodoUpdateDTO> todos;
+    private List<TodoDTO> todos;
     private Date createdAt;
     private Date updatedAt;
 
@@ -25,24 +25,16 @@ public class TodolistUpdateDTO {
         this.title = title;
     }
 
-    public int getId() {
-        return id;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public List<TodoUpdateDTO> getTodos() {
+    public List<TodoDTO> geTodoDTOs() {
         return todos;
     }
 
-    public void setTodos(List<TodoUpdateDTO> todos) {
+    public void setTodoDTOs(List<TodoDTO> todos) {
         this.todos = todos;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
     }
 
     public void setCreatedAt(Date createdAt) {
@@ -57,4 +49,19 @@ public class TodolistUpdateDTO {
         this.updatedAt = updatedAt;
     }
 
+    public List<TodoDTO> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<TodoDTO> todos) {
+        this.todos = todos;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

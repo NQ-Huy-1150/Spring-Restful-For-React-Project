@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.react_project.backend.domain.User;
 import com.react_project.backend.domain.UserDetailsImpl;
-import com.react_project.backend.domain.dto.request.LoginRequest;
-import com.react_project.backend.domain.dto.request.UserDTO;
-import com.react_project.backend.domain.dto.response.UserJwtResponse;
-import com.react_project.backend.domain.dto.response.MessageResponse;
+import com.react_project.backend.dto.request.LoginRequest;
+import com.react_project.backend.dto.request.UserDTO;
+import com.react_project.backend.dto.response.UserJwtResponse;
+import com.react_project.backend.dto.response.MessageResponse;
 import com.react_project.backend.security.JwtUtils;
 import com.react_project.backend.service.UserService;
 

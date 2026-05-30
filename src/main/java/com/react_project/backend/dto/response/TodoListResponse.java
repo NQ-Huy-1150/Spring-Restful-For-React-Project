@@ -1,4 +1,4 @@
-package com.react_project.backend.domain.dto.response;
+package com.react_project.backend.dto.response;
 
 import java.util.Date;
 import java.util.List;

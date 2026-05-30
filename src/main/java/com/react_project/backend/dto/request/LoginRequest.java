@@ -1,4 +1,4 @@
-package com.react_project.backend.domain.dto.request;
+package com.react_project.backend.dto.request;
 
 public class LoginRequest {
     private String username;

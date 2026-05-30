@@ -1,4 +1,4 @@
-package com.react_project.backend.domain.dto.response;
+package com.react_project.backend.dto.response;
 
 public class TodoResponse {
     private int id;

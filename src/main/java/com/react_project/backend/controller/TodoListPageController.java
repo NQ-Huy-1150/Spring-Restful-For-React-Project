@@ -4,12 +4,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.react_project.backend.domain.Todo;
 import com.react_project.backend.domain.TodoList;
-import com.react_project.backend.domain.dto.request.TodoDTO;
-import com.react_project.backend.domain.dto.request.TodoListDTO;
-import com.react_project.backend.domain.dto.request.TodolistUpdateDTO;
-import com.react_project.backend.domain.dto.response.MessageResponse;
-import com.react_project.backend.domain.dto.response.TodoListResponse;
-import com.react_project.backend.domain.dto.response.TodoResponse;
+import com.react_project.backend.dto.request.TodoDTO;
+import com.react_project.backend.dto.request.TodoListDTO;
+import com.react_project.backend.dto.request.TodolistUpdateDTO;
+import com.react_project.backend.dto.response.MessageResponse;
+import com.react_project.backend.dto.response.TodoListResponse;
+import com.react_project.backend.dto.response.TodoResponse;
 import com.react_project.backend.service.TodoListService;
 
 import java.util.ArrayList;

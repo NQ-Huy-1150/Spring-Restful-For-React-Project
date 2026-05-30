@@ -56,7 +56,8 @@ public class WebSecurityConfig {
                 // Configure endpoint authorization
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
-                        .requestMatchers("/api/v1/auth/**", "/test/hello", "/api/v1/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/test/hello", "/api/v1/**")
+                        .permitAll()
 
                         // All other endpoints require authentication
                         .anyRequest().authenticated())

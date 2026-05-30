@@ -29,8 +29,18 @@ public class TodoList {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Todo> todos;
+
+    public void addTodo(Todo td) {
+        todos.add(td);
+        td.setTodoList(this);
+    }
+
+    public void removeTodo(Todo td) {
+        todos.remove(td);
+        td.setTodoList(null);
+    }
 
     public int getId() {
         return id;

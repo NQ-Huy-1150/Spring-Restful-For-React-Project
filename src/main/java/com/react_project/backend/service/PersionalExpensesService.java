@@ -1,10 +1,7 @@
 package com.react_project.backend.service;
 
-import com.react_project.backend.dto.request.HousingExpenseRequest;
 import com.react_project.backend.dto.request.PersionalExpensesRequest;
-import com.react_project.backend.dto.response.HousingExpenseResponse;
 import com.react_project.backend.dto.response.PersionalExpensesResponse;
-import com.react_project.backend.entity.HousingExpense;
 import com.react_project.backend.entity.PersionalExpenses;
 import com.react_project.backend.mapper.PersionalExpensesMapper;
 import com.react_project.backend.repository.PersionalExpensesRepository;

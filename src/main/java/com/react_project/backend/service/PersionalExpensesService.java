@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,11 +40,11 @@ public class PersionalExpensesService {
         persionalExpensesRepository.deleteById(idPe);
     }
 
+    @Transactional
     public PersionalExpensesResponse updatePe(String idPe,PersionalExpensesRequest persionalExpensesRequest){
         PersionalExpenses persionalExpenses = persionalExpensesRepository.findById(idPe).orElseThrow(() -> new NullPointerException("don't find"));
         persionalExpenses = persionalExpensesMapper.toPe(persionalExpensesRequest);
-        persionalExpensesRepository.save(persionalExpenses);
-        return persionalExpensesMapper.toPeResponse(persionalExpenses);
+        return persionalExpensesMapper.toPeResponse(persionalExpensesRepository.save(persionalExpenses));
     }
 
 }

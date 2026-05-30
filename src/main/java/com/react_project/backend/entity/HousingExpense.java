@@ -13,8 +13,6 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
-// Tính tiền phòng: Nhập số điện, giá điện
 public class HousingExpense {
 
     @Id

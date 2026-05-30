@@ -2,8 +2,8 @@ package com.react_project.backend.service;
 
 import org.springframework.stereotype.Service;
 
-import com.react_project.backend.domain.Todo;
-import com.react_project.backend.domain.TodoList;
+import com.react_project.backend.entity.Todo;
+import com.react_project.backend.entity.TodoList;
 import com.react_project.backend.dto.request.TodoDTO;
 import com.react_project.backend.dto.request.TodoUpdateDTO;
 import com.react_project.backend.repository.TodoRepository;

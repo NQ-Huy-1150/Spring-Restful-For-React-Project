@@ -1,10 +1,9 @@
 package com.react_project.backend.mapper;
 
-import com.react_project.backend.domain.HousingExpense;
+import com.react_project.backend.entity.HousingExpense;
 import com.react_project.backend.dto.request.HousingExpenseRequest;
 import com.react_project.backend.dto.response.HousingExpenseResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface HousingExpenseMapper {

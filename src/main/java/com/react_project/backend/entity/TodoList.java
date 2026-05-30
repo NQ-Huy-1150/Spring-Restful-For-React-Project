@@ -1,4 +1,4 @@
-package com.react_project.backend.domain;
+package com.react_project.backend.entity;
 
 import java.util.Date;
 import java.util.List;

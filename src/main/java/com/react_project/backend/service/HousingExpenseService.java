@@ -1,6 +1,6 @@
 package com.react_project.backend.service;
 
-import com.react_project.backend.domain.HousingExpense;
+import com.react_project.backend.entity.HousingExpense;
 import com.react_project.backend.dto.request.HousingExpenseRequest;
 import com.react_project.backend.dto.response.HousingExpenseResponse;
 import com.react_project.backend.mapper.HousingExpenseMapper;

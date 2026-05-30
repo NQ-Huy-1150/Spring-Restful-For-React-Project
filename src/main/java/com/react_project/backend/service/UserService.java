@@ -2,7 +2,7 @@ package com.react_project.backend.service;
 
 import org.springframework.stereotype.Service;
 
-import com.react_project.backend.domain.User;
+import com.react_project.backend.entity.User;
 import com.react_project.backend.dto.request.UserDTO;
 import com.react_project.backend.repository.UserRepository;
 

@@ -1,4 +1,4 @@
-package com.react_project.backend.domain;
+package com.react_project.backend.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +8,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.react_project.backend.domain.UserDetailsImpl;
+import com.react_project.backend.entity.UserDetailsImpl;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

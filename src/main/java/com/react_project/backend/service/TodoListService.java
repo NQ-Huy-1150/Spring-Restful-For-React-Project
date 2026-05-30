@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.react_project.backend.domain.Todo;
-import com.react_project.backend.domain.TodoList;
-import com.react_project.backend.domain.User;
+import com.react_project.backend.entity.Todo;
+import com.react_project.backend.entity.TodoList;
+import com.react_project.backend.entity.User;
 import com.react_project.backend.dto.request.TodoDTO;
 import com.react_project.backend.dto.request.TodoListDTO;
 import com.react_project.backend.dto.request.TodoUpdateDTO;

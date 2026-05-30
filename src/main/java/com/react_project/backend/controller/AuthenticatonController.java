@@ -8,8 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.react_project.backend.domain.User;
-import com.react_project.backend.domain.UserDetailsImpl;
+import com.react_project.backend.entity.User;
+import com.react_project.backend.entity.UserDetailsImpl;
 import com.react_project.backend.dto.request.LoginRequest;
 import com.react_project.backend.dto.request.UserDTO;
 import com.react_project.backend.dto.response.UserJwtResponse;

@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.react_project.backend.domain.User;
-import com.react_project.backend.domain.UserDetailsImpl;
+import com.react_project.backend.entity.User;
+import com.react_project.backend.entity.UserDetailsImpl;
 import com.react_project.backend.repository.UserRepository;
 
 @Service

@@ -15,4 +15,5 @@ public interface TodoListRepository extends JpaRepository<TodoList, Integer> {
     Optional<TodoList> findById(int id);
 
     boolean existsById(int id);
+
 }

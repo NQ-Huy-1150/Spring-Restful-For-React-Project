@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -96,11 +97,20 @@ public class TodoListPageController {
 
     @PutMapping("/modify-todolist")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> ModifyTodolist(@RequestBody TodolistUpdateDTO todoListDTO) {
+    public ResponseEntity<?> modifyTodolist(@RequestBody TodolistUpdateDTO todoListDTO) {
         if (this.todoListService.isExistedById(todoListDTO.getId())) {
             this.todoListService.handleModifyTodoList(todoListDTO);
             return ResponseEntity.ok().body(new MessageResponse("Modify successfully !"));
         }
         return ResponseEntity.badRequest().body(new MessageResponse("Id not found !"));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResponseEntity<?> getDelete(@PathVariable int id) {
+        if (this.todoListService.getDelete(id)) {
+            return ResponseEntity.ok(new MessageResponse("Deleted successfully !"));
+        }
+        return ResponseEntity.badRequest().body("Id not found !");
     }
 }

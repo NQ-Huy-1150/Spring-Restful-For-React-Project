@@ -16,6 +16,8 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
+// Tính tiền phòng: Nhập số điện, giá điện
 public class HousingExpense {
 
     @Id
@@ -24,16 +26,20 @@ public class HousingExpense {
 
     LocalDate month;
 
+    Double housePrice;
+
     Double amoutOfElectric;
+    Double electricityPrice;
     Double electricityBill;
 
     Double amoutOfWater;
+    Double waterPrice;
     Double waterBill;
+
+    Double serviceCosts;
 
     Double othercosts;
 
     Double total;
-
-
 
 }

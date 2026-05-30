@@ -1,4 +1,4 @@
-package com.react_project.backend.entity;
+package com.react_project.backend.dto.response;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,20 +11,12 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-// Tính tiền sinh hoạt phí,lấy tổng thu nhập trừ tiền nhà
-// trừ tiền ăn trừ tiền đi lại, trừ 3 chi phí khác nếu có
-// trừ tiền tiết kiệm và đầu tư, và tính toán còn lại bao nhiêu
-public class PersionalExpenses {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class PersionalExpensesResponse {
 
     //
     LocalDate month;

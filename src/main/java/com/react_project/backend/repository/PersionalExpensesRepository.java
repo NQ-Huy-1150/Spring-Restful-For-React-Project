@@ -1,0 +1,10 @@
+package com.react_project.backend.repository;
+
+import com.react_project.backend.entity.PersionalExpenses;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PersionalExpensesRepository extends JpaRepository<PersionalExpenses,String> {
+
+}

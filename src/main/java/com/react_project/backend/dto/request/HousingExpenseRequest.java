@@ -17,15 +17,19 @@ public class HousingExpenseRequest {
 
     LocalDate month;
 
+    Double housePrice;
+
     Double amoutOfElectric;
+    Double electricityPrice;
     Double electricityBill;
 
     Double amoutOfWater;
+    Double waterPrice;
     Double waterBill;
 
-    Double othercosts;
+    Double serviceCosts;
 
-    Double total;
+    Double othercosts;
 
 
 

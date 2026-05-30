@@ -3,11 +3,13 @@ package com.react_project.backend.domain.dto.request;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class TodoDTO {
+public class TodoUpdateDTO {
     @NotEmpty
     private String content;
     @NotNull
     private boolean checked;
+
+    private Integer id;
 
     public String getContent() {
         return content;
@@ -24,4 +26,13 @@ public class TodoDTO {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 }

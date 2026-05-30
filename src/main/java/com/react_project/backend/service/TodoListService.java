@@ -1,22 +1,40 @@
 package com.react_project.backend.service;
 
+import com.react_project.backend.security.AuthTokenFilter;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.react_project.backend.domain.Todo;
 import com.react_project.backend.domain.TodoList;
 import com.react_project.backend.domain.User;
+import com.react_project.backend.domain.dto.request.TodoDTO;
 import com.react_project.backend.domain.dto.request.TodoListDTO;
+import com.react_project.backend.domain.dto.request.TodoUpdateDTO;
+import com.react_project.backend.domain.dto.request.TodolistUpdateDTO;
 import com.react_project.backend.repository.TodoListRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class TodoListService {
+    private final AuthTokenFilter authenticationJwtTokenFilter;
     private final TodoListRepository todoListRepository;
     private final TodoService todoService;
 
-    public TodoListService(TodoListRepository todoListRepository, TodoService todoService) {
+    public TodoListService(TodoListRepository todoListRepository, TodoService todoService,
+            AuthTokenFilter authenticationJwtTokenFilter) {
         this.todoListRepository = todoListRepository;
         this.todoService = todoService;
+        this.authenticationJwtTokenFilter = authenticationJwtTokenFilter;
     }
 
     public TodoList handleConvertDTO(TodoListDTO todoListDTO) {
@@ -27,11 +45,28 @@ public class TodoListService {
         User user = new User();
         user.setId(1);
         todoList.setTitle(todoListDTO.getTitle());
-        todoList.setCreatedAt(todoListDTO.getCreatedAt());
+        Date time = new Date();
+        todoList.setCreatedAt(time);
         todoList.setUpdatedAt(todoListDTO.getUpdatedAt());
         todoList.setUser(user);
-        todoList.setTodos(todoListDTO.getTodos().stream()
+        List<TodoDTO> requestTodos = Objects.requireNonNullElse(todoListDTO.getTodos(), List.of());
+        todoList.setTodos(requestTodos.stream()
                 .map(dto -> this.todoService.HandleConvertTodoDTO(dto, todoList)).toList());
+        return todoList;
+    }
+
+    public TodoList handleConvertUpdateDTO(TodolistUpdateDTO todoListDTO) {
+        if (todoListDTO == null) {
+            throw new IllegalArgumentException("TodoListUpdateDTO must not be null");
+        }
+        TodoList todoList = new TodoList();
+        User user = new User();
+        user.setId(1);
+        todoList.setTitle(todoListDTO.getTitle());
+        todoList.setUser(user);
+        List<TodoUpdateDTO> requestTodos = Objects.requireNonNullElse(todoListDTO.getTodos(), List.of());
+        todoList.setTodos(requestTodos.stream()
+                .map(dto -> this.todoService.HandleConvertTodoUpdateDTO(dto, todoList)).toList());
         return todoList;
     }
 
@@ -44,4 +79,60 @@ public class TodoListService {
         return todos;
     }
 
+    public List<TodoList> fetchAllTodoList() {
+        return this.todoListRepository.findAll();
+    }
+
+    public Optional<TodoList> getTodoListById(int id) {
+        return this.todoListRepository.findById(id);
+    }
+
+    @Transactional
+    public void handleModifyTodoList(TodolistUpdateDTO todoListDTO) {
+        Optional<TodoList> optional = getTodoListById(todoListDTO.getId());
+        if (optional.isPresent()) {
+            TodoList currentList = optional.get();
+            currentList.setTitle(todoListDTO.getTitle());
+            Date time = new Date();
+            currentList.setUpdatedAt(time);
+            List<Todo> removedItem = handleGetDeletedTodoIdFromDTO(todoListDTO.getTodos(), currentList);
+            List<Todo> addItem = handleGetNewTodoFromDTO(todoListDTO.getTodos());
+            TodoList temp = handleConvertUpdateDTO(todoListDTO);
+            removedItem.forEach(currentList::removeTodo);
+            addItem.forEach(currentList::addTodo);
+            currentList.setTodos(temp.getTodos().stream().filter(t -> t.getId() != 0).toList());
+            this.todoListRepository.save(currentList);
+        }
+    }
+
+    public List<Todo> handleGetDeletedTodoIdFromDTO(List<TodoUpdateDTO> todoDTO, TodoList currentTodoList) {
+        Set<Integer> removed = todoDTO.stream().filter(t -> t.getId() != 0).map(t -> t.getId())
+                .collect(Collectors.toSet());
+        List<Todo> removeTodos = currentTodoList.getTodos().stream().filter(t -> !removed.contains(t.getId())).toList();
+        for (Todo todo : removeTodos) {
+            System.err.println(">>>>>>>>>>>>>>>>>> REMOVED-TODO-ID :" + todo.getId());
+        }
+        return removeTodos;
+    }
+
+    public List<Todo> handleGetNewTodoFromDTO(List<TodoUpdateDTO> todoDTOs) {
+        List<TodoUpdateDTO> tds = todoDTOs.stream().filter(t -> t.getId() == 0).toList();
+        List<Todo> todos = new ArrayList<Todo>();
+        for (TodoUpdateDTO todoDTO : tds) {
+            Todo td = new Todo(todoDTO.getId(), todoDTO.getContent(), todoDTO.getChecked());
+            todos.add(td);
+            System.out.println(">>>>>>>> NEW TODO ID : " + todoDTO.getId());
+            System.out.println(">>>>>>>> NEW TODO CONTENT : " + todoDTO.getContent());
+            System.out.println(">>>>>>>> NEW TODO CHECKED : " + todoDTO.getChecked());
+        }
+        return todos;
+    }
+
+    public void getDelete(int id) {
+        this.todoListRepository.deleteById(id);
+    }
+
+    public boolean isExistedById(int id) {
+        return this.todoListRepository.existsById(id);
+    }
 }

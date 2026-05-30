@@ -25,6 +25,15 @@ public class Todo {
     @JoinColumn(name = "todolist_id")
     private TodoList todoList;
 
+    public Todo() {
+    }
+
+    public Todo(int id, @NotEmpty String content, boolean checked) {
+        this.id = id;
+        this.content = content;
+        this.checked = checked;
+    }
+
     public int getId() {
         return id;
     }

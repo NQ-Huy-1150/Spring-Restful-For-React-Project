@@ -13,6 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HousingExpenseResponse {
 
+    String id;
+
     LocalDate month;
 
     Double amoutOfElectric;

@@ -38,15 +38,15 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     // user one-to-many todolist
     private List<TodoList> todoLists;
-    private List<HousingExpense> housingExpenses;
-
-    public List<HousingExpense> getHousingExpenses() {
-        return housingExpenses;
-    }
-
-    public void setHousingExpenses(List<HousingExpense> housingExpenses) {
-        this.housingExpenses = housingExpenses;
-    }
+//    private List<HousingExpense> housingExpenses;
+//
+//    public List<HousingExpense> getHousingExpenses() {
+//        return housingExpenses;
+//    }
+//
+//    public void setHousingExpenses(List<HousingExpense> housingExpenses) {
+//        this.housingExpenses = housingExpenses;
+//    }
 
     private boolean isAdmin;
 

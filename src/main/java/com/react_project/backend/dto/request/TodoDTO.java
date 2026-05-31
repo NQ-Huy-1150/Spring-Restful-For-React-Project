@@ -24,4 +24,5 @@ public class TodoDTO {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+
 }

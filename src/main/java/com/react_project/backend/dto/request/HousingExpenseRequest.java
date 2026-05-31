@@ -32,5 +32,4 @@ public class HousingExpenseRequest {
     Double othercosts;
 
 
-
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.react_project.backend.entity.User;
 import com.react_project.backend.entity.UserDetailsImpl;
 import com.react_project.backend.dto.request.LoginRequest;
-import com.react_project.backend.dto.request.UserDTO;
+import com.react_project.backend.dto.request.UserRequest;
 import com.react_project.backend.dto.response.UserJwtResponse;
 import com.react_project.backend.dto.response.MessageResponse;
 import com.react_project.backend.security.JwtUtils;
@@ -54,17 +54,17 @@ public class AuthenticatonController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        if (this.userService.isUsernameExited(userDTO.getUsername())) {
+    public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest) {
+        if (this.userService.isUsernameExited(userRequest.getUsername())) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("username is already taken!"));
         }
-        if (this.userService.isEmailExisted(userDTO.getEmail())) {
+        if (this.userService.isEmailExisted(userRequest.getEmail())) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Email is already in use!"));
         }
-        userDTO.setPassword(encoder.encode(userDTO.getPassword()));
-        User user = this.userService.handleRegisterDTO(userDTO);
+        userRequest.setPassword(encoder.encode(userRequest.getPassword()));
+        User user = this.userService.handleRegisterDTO(userRequest);
         user = this.userService.handleSaveUser(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

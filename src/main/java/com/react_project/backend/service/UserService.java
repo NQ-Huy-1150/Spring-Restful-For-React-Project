@@ -74,4 +74,5 @@ public class UserService {
     public boolean isEmailExisted(String email) {
         return this.userRepository.existsByEmail(email);
     }
+
 }

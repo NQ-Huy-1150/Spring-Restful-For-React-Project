@@ -2,6 +2,7 @@ package com.react_project.backend.controller;
 
 import com.react_project.backend.dto.request.HousingExpenseRequest;
 import com.react_project.backend.dto.request.UserRequest;
+import com.react_project.backend.dto.response.ApiResponse;
 import com.react_project.backend.dto.response.HousingExpenseResponse;
 import com.react_project.backend.dto.response.UserResponse;
 import com.react_project.backend.entity.User;
@@ -26,24 +27,32 @@ public class UserController {
     UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest){
-        return ResponseEntity.ok().body(userService.createUser(userRequest));
+    public ApiResponse<UserResponse> createUser(@RequestBody UserRequest userRequest){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(userRequest))
+                .build();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id){
+    public ApiResponse<String> deleteUser(@PathVariable int id){
         userService.deleteUser(id);
-        return ResponseEntity.ok().body("Delete successfully");
+        return ApiResponse.<String>builder()
+                .result("Delete successfully")
+                .build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable int id, @RequestBody UserRequest userRequest){
-        return ResponseEntity.ok().body(userService.updateUser(id,userRequest));
+    public ApiResponse updateUser(@PathVariable int id, @RequestBody UserRequest userRequest){
+        return ApiResponse.builder()
+                .result(userService.updateUser(id, userRequest))
+                .build();
     }
 
         @GetMapping("{id}")
-    public ResponseEntity<UserResponse> getMyInfor(@PathVariable int id){
-        return ResponseEntity.ok().body(userService.getMyInfor(id));
+        public ApiResponse getMyInfor(@PathVariable int id){
+        return ApiResponse.builder()
+                .result(userService.getMyInfor(id))
+                .build();
     }
 
 }

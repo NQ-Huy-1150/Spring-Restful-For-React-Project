@@ -1,13 +1,13 @@
 package com.react_project.backend.controller;
 
 import com.react_project.backend.dto.request.HousingExpenseRequest;
+import com.react_project.backend.dto.response.ApiResponse;
 import com.react_project.backend.dto.response.HousingExpenseResponse;
 import com.react_project.backend.service.HousingExpenseService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,24 +22,31 @@ public class HousingExpenseController {
     HousingExpenseService housingExpenseService;
 
     @PostMapping()
-    public ResponseEntity<HousingExpenseResponse> createHe(@RequestBody HousingExpenseRequest housingExpenseRequest){
-        return ResponseEntity.ok().body(housingExpenseService.createHE(housingExpenseRequest));
+    public ApiResponse<HousingExpenseResponse> createHe(@RequestBody HousingExpenseRequest housingExpenseRequest){
+        return ApiResponse.<HousingExpenseResponse>builder()
+                .result(housingExpenseService.createHE(housingExpenseRequest))
+                .build();
     }
 
     @GetMapping()
-    public ResponseEntity<List<HousingExpenseResponse>> getAllHe(){
-        return ResponseEntity.ok().body(housingExpenseService.getAllHe());
+    public ApiResponse<List<HousingExpenseResponse>> getAllHe(){
+        return ApiResponse.<List<HousingExpenseResponse>>builder()
+                .result(housingExpenseService.getAllHe())
+                .build();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteHe(@PathVariable String id){
-        housingExpenseService.deleteHe(id);
-        return ResponseEntity.ok().body("Delete successfully");
+    public ApiResponse<String> deleteHe(@PathVariable String id){
+        return ApiResponse.<String>builder()
+                .result("Delete successfully")
+                .build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<HousingExpenseResponse> updateHe(@PathVariable String id, @RequestBody HousingExpenseRequest housingExpenseRequest){
-        return ResponseEntity.ok().body(housingExpenseService.updateHe(id,housingExpenseRequest));
+    public ApiResponse<HousingExpenseResponse> updateHe(@PathVariable String id, @RequestBody HousingExpenseRequest housingExpenseRequest){
+        return ApiResponse.<HousingExpenseResponse>builder()
+                .result(housingExpenseService.updateHe(id,housingExpenseRequest))
+                .build();
     }
 
 }

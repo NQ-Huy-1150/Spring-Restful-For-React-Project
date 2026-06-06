@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.react_project.backend.entity.Catalog;
 import com.react_project.backend.entity.Todo;
 import com.react_project.backend.entity.TodoList;
 import com.react_project.backend.entity.User;
@@ -25,15 +26,15 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class TodoListService {
-    private final AuthTokenFilter authenticationJwtTokenFilter;
     private final TodoListRepository todoListRepository;
     private final TodoService todoService;
+    private final CatalogService catalogService;
 
     public TodoListService(TodoListRepository todoListRepository, TodoService todoService,
-            AuthTokenFilter authenticationJwtTokenFilter) {
+            CatalogService catalogService) {
         this.todoListRepository = todoListRepository;
         this.todoService = todoService;
-        this.authenticationJwtTokenFilter = authenticationJwtTokenFilter;
+        this.catalogService = catalogService;
     }
 
     public TodoList handleConvertDTO(TodoListDTO todoListDTO) {
@@ -48,6 +49,14 @@ public class TodoListService {
         todoList.setCreatedAt(time);
         todoList.setUpdatedAt(todoListDTO.getUpdatedAt());
         todoList.setUser(user);
+        if (todoListDTO.getCatalogId() == null) {
+            todoList.setCatalog(null);
+        } else {
+            Optional<Catalog> optional = this.catalogService.getCatalogById(todoListDTO.getCatalogId());
+            Catalog cata = optional.orElseThrow(
+                    () -> new RuntimeException("Catalog Id not found !" + todoListDTO.getCatalogId()));
+            todoList.setCatalog(cata);
+        }
         List<TodoDTO> requestTodos = Objects.requireNonNullElse(todoListDTO.getTodos(), List.of());
         todoList.setTodos(requestTodos.stream()
                 .map(dto -> this.todoService.HandleConvertTodoDTO(dto, todoList)).toList());
@@ -80,6 +89,13 @@ public class TodoListService {
             currentList.setTitle(todoListDTO.getTitle());
             Date time = new Date();
             currentList.setUpdatedAt(time);
+            if (todoListDTO.getCatalogId() != null) {
+                Optional<Catalog> cataOptional = this.catalogService.getCatalogById(todoListDTO.getCatalogId());
+                if (cataOptional.isPresent()) {
+                    Catalog cata = cataOptional.get();
+                    currentList.setCatalog(cata);
+                }
+            }
             for (Todo existing : currentList.getTodos()) {
                 for (TodoUpdateDTO dto : incomingTodos) {
                     if (dto.getId() != null && dto.getId() == existing.getId()) {

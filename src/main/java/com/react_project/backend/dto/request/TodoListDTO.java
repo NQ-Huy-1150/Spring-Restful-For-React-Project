@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class TodoListDTO {
-    private int id;
+    private Integer id;
     private String title;
     @NotNull
     @Valid
@@ -16,6 +16,8 @@ public class TodoListDTO {
     private List<TodoDTO> todos;
     private Date createdAt;
     private Date updatedAt;
+
+    private Integer catalogId;
 
     public String getTitle() {
         return title;
@@ -57,11 +59,20 @@ public class TodoListDTO {
         this.todos = todos;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
+
+    public Integer getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(Integer catalogId) {
+        this.catalogId = catalogId;
+    }
+
 }

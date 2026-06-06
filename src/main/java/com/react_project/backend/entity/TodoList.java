@@ -32,6 +32,10 @@ public class TodoList {
     @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Todo> todos;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "catalog_id")
+    private Catalog catalog;
+
     public void addTodo(Todo td) {
         todos.add(td);
         td.setTodoList(this);
@@ -88,6 +92,14 @@ public class TodoList {
 
     public void setTodos(List<Todo> todos) {
         this.todos = todos;
+    }
+
+    public Catalog getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(Catalog catalog) {
+        this.catalog = catalog;
     }
 
 }

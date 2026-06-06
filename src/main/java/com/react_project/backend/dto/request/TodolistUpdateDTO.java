@@ -16,6 +16,7 @@ public class TodolistUpdateDTO {
     private List<TodoUpdateDTO> todos;
     private Date createdAt;
     private Date updatedAt;
+    private Integer catalogId;
 
     public String getTitle() {
         return title;
@@ -55,6 +56,14 @@ public class TodolistUpdateDTO {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Integer getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(Integer catalogId) {
+        this.catalogId = catalogId;
     }
 
 }

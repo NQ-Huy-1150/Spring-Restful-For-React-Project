@@ -9,13 +9,16 @@ public class TodoListResponse {
     private List<TodoResponse> todos;
     private Date createdAt;
     private Date updatedAt;
+    private Integer catalogId;
 
-    public TodoListResponse(int id, String title, List<TodoResponse> todos, Date createdAt, Date updatedAt) {
+    public TodoListResponse(int id, String title, List<TodoResponse> todos, Date createdAt, Date updatedAt,
+            Integer catalogId) {
         this.id = id;
         this.title = title;
         this.todos = todos;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.catalogId = catalogId;
     }
 
     public int getId() {
@@ -56,6 +59,14 @@ public class TodoListResponse {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Integer getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(Integer catalogId) {
+        this.catalogId = catalogId;
     }
 
 }

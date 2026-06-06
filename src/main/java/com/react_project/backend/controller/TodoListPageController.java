@@ -14,6 +14,7 @@ import com.react_project.backend.service.TodoListService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,10 @@ public class TodoListPageController {
 
     @PostMapping("/create-todolist")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> createTodolist(@Validated @RequestBody TodoListDTO todosDTO) {
-        TodoList savedTodoList = this.todoListService.handleSaveTodoList(todosDTO);
+    public ResponseEntity<?> createTodolist(@Validated @RequestBody TodoListDTO todoListDTO) {
+        System.out.println(todoListDTO.getId() + todoListDTO.getTitle() + todoListDTO.getCreatedAt() + "CATALOG ID "
+                + todoListDTO.getCatalogId());
+        TodoList savedTodoList = this.todoListService.handleSaveTodoList(todoListDTO);
         if (savedTodoList != null) {
             TodoListDTO response = new TodoListDTO();
             response.setId(savedTodoList.getId());
@@ -53,6 +56,8 @@ public class TodoListPageController {
                 dto.setChecked(todo.getChecked());
                 return dto;
             }).toList());
+            Integer cataId = savedTodoList.getCatalog() != null ? savedTodoList.getCatalog().getId() : null;
+            response.setCatalogId(cataId);
             return ResponseEntity.ok().body(response);
         } else
             return ResponseEntity.badRequest().body(new MessageResponse("Cant create Todolist !"));
@@ -70,8 +75,9 @@ public class TodoListPageController {
                     TodoResponse obj = new TodoResponse(todo.getId(), todo.getContent(), todo.getChecked());
                     todoResponses.add(obj);
                 }
+                Integer cataId = list.getCatalog() != null ? list.getCatalog().getId() : null;
                 TodoListResponse response = new TodoListResponse(list.getId(), list.getTitle(), todoResponses,
-                        list.getCreatedAt(), list.getUpdatedAt());
+                        list.getCreatedAt(), list.getUpdatedAt(), cataId);
                 todoListResponses.add(response);
             }
         }
@@ -89,8 +95,9 @@ public class TodoListPageController {
                 TodoResponse obj = new TodoResponse(todo.getId(), todo.getContent(), todo.getChecked());
                 todoResponses.add(obj);
             }
+            Integer cataId = todoList.getCatalog() != null ? todoList.getCatalog().getId() : null;
             TodoListResponse response = new TodoListResponse(todoList.getId(), todoList.getTitle(), todoResponses,
-                    todoList.getCreatedAt(), todoList.getUpdatedAt());
+                    todoList.getCreatedAt(), todoList.getUpdatedAt(), cataId);
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.badRequest().body(new MessageResponse("Not found"));
@@ -98,7 +105,9 @@ public class TodoListPageController {
 
     @PutMapping("/modify-todolist")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> modifyTodolist(@RequestBody TodolistUpdateDTO todoListDTO) {
+    public ResponseEntity<?> modifyTodolist(@Validated @RequestBody TodolistUpdateDTO todoListDTO) {
+        System.out.println(todoListDTO.getId() + todoListDTO.getTitle() + todoListDTO.getCreatedAt() + "CATALOG ID "
+                + todoListDTO.getCatalogId());
         if (this.todoListService.isExistedById(todoListDTO.getId())) {
             this.todoListService.handleModifyTodoList(todoListDTO);
             return ResponseEntity.ok().body(new MessageResponse("Modify successfully !"));

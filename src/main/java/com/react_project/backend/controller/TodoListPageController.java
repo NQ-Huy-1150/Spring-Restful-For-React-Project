@@ -14,7 +14,6 @@ import com.react_project.backend.service.TodoListService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;

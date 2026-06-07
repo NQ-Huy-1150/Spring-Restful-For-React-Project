@@ -18,6 +18,9 @@ public class Catalog {
     @OneToMany(mappedBy = "catalog")
     private List<TodoList> todoLists;
 
+    @OneToMany(mappedBy = "catalog")
+    private List<Note> notes;
+
     public Catalog() {
     }
 

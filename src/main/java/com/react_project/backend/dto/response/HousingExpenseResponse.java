@@ -31,4 +31,6 @@ public class HousingExpenseResponse {
 
     Double othercosts;
 
+    Double total;
+
 }

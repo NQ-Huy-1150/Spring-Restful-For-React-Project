@@ -20,9 +20,19 @@ public class HousingExpenseService {
     HousingExpenseRepository housingExpenseRepository;
     HousingExpenseMapper housingExpenseMapper;
 
-    public HousingExpenseResponse createHE(HousingExpenseRequest housingExpenseRequest){
-        HousingExpense housingExpense = housingExpenseMapper.toHe(housingExpenseRequest);
-        return housingExpenseMapper.toHeResponse(housingExpenseRepository.save(housingExpense));
+    public HousingExpenseResponse createHE(HousingExpenseRequest request){
+
+        HousingExpense housingExpense = housingExpenseMapper.toHe(request);
+        housingExpense.setElectricityBill(request.getAmoutOfElectric()* request.getElectricityPrice());
+        housingExpense.setWaterBill(request.getAmoutOfWater()*request.getWaterPrice());
+        housingExpense.setTotal(
+                housingExpense.getHousePrice() + housingExpense.getWaterBill()
+                +housingExpense.getElectricityBill()
+                +housingExpense.getOthercosts() +housingExpense.getServiceCosts()
+        );
+
+        housingExpenseRepository.save(housingExpense);
+        return housingExpenseMapper.toHeResponse(housingExpense);
     }
 
     public List<HousingExpenseResponse> getAllHe(){
@@ -45,5 +55,9 @@ public class HousingExpenseService {
         housingExpenseRepository.save(housingExpense);
         return housingExpenseMapper.toHeResponse(housingExpense);
     }
+
+//    private double caculatingTotal(HousingExpenseRequest request){
+//        return request
+//    }
 
 }

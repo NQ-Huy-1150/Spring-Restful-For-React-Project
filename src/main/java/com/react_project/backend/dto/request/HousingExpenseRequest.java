@@ -21,11 +21,11 @@ public class HousingExpenseRequest {
 
     Double amoutOfElectric;
     Double electricityPrice;
-    Double electricityBill;
+//    Double electricityBill;
 
     Double amoutOfWater;
     Double waterPrice;
-    Double waterBill;
+//    Double waterBill;
 
     Double serviceCosts;
 

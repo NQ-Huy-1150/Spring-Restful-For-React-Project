@@ -37,6 +37,7 @@ public class HousingExpenseController {
 
     @DeleteMapping("{id}")
     public ApiResponse<String> deleteHe(@PathVariable String id){
+        housingExpenseService.deleteHe(id);
         return ApiResponse.<String>builder()
                 .result("Delete successfully")
                 .build();

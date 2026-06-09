@@ -14,9 +14,6 @@ import java.time.LocalDate;
 
 
 public class PersionalExpensesRequest {
-
-    String id;
-
     LocalDate month;
 
     Double totalIncome;

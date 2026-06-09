@@ -49,15 +49,20 @@ public class HousingExpenseService {
         housingExpenseRepository.deleteById(idHe);
     }
 
-    public HousingExpenseResponse updateHe(String idHe,HousingExpenseRequest housingExpenseRequest){
+    public HousingExpenseResponse updateHe(String idHe,HousingExpenseRequest request){
         HousingExpense housingExpense = housingExpenseRepository.findById(idHe).orElseThrow(() -> new NullPointerException("don't find"));
-        housingExpense = housingExpenseMapper.toHe(housingExpenseRequest);
+
+
+        housingExpense = housingExpenseMapper.toHe(request);
+        housingExpense.setElectricityBill(request.getAmoutOfElectric()* request.getElectricityPrice());
+        housingExpense.setWaterBill(request.getAmoutOfWater()*request.getWaterPrice());
+        housingExpense.setTotal(
+                housingExpense.getHousePrice() + housingExpense.getWaterBill()
+                        +housingExpense.getElectricityBill()
+                        +housingExpense.getOthercosts() +housingExpense.getServiceCosts()
+        );
         housingExpenseRepository.save(housingExpense);
         return housingExpenseMapper.toHeResponse(housingExpense);
     }
-
-//    private double caculatingTotal(HousingExpenseRequest request){
-//        return request
-//    }
 
 }

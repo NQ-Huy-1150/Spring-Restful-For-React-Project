@@ -34,6 +34,6 @@ public class PersionalExpensesRequest {
     Double otherCost3;
 
     Double savingAndInvestment;
-
-    Double RemaningAmount;
+//
+//    Double RemaningAmount;
 }

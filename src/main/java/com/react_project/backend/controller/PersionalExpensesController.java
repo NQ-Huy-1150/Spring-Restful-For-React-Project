@@ -1,6 +1,7 @@
 package com.react_project.backend.controller;
 
 import com.react_project.backend.dto.request.PersionalExpensesRequest;
+import com.react_project.backend.dto.response.ApiResponse;
 import com.react_project.backend.dto.response.PersionalExpensesResponse;
 import com.react_project.backend.service.PersionalExpensesService;
 import lombok.AccessLevel;
@@ -23,26 +24,34 @@ public class PersionalExpensesController {
     PersionalExpensesService persionalExpensesService;
 
     @PostMapping()
-    public ResponseEntity<PersionalExpensesResponse> createPe(
-            @RequestBody PersionalExpensesRequest persionalExpensesRequest) {
-        return ResponseEntity.ok().body(persionalExpensesService.createPe(persionalExpensesRequest));
+    ApiResponse<PersionalExpensesResponse> createPe(@RequestBody PersionalExpensesRequest request){
+        return ApiResponse.<PersionalExpensesResponse>builder()
+                .result(persionalExpensesService.createPe(request))
+                .build();
     }
 
     @GetMapping()
-    public ResponseEntity<List<PersionalExpensesResponse>> getAllPe() {
-        return ResponseEntity.ok().body(persionalExpensesService.getAllPe());
+    ApiResponse<List<PersionalExpensesResponse>> getAllPe(){
+        return ApiResponse.<List<PersionalExpensesResponse>>builder()
+                .result(persionalExpensesService.getAllPe())
+                .build();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deletePe(@PathVariable String id) {
+    ApiResponse<String> deletePe(@PathVariable String id){
         persionalExpensesService.deletePe(id);
-        return ResponseEntity.ok().body("Delete successfully");
+        return ApiResponse.<String>builder()
+                .result("DeleteSuccessfully")
+                .build();
     }
 
+
     @PutMapping("{id}")
-    public ResponseEntity<PersionalExpensesResponse> updatePe(@PathVariable String id,
-            @RequestBody PersionalExpensesRequest persionalExpensesRequest) {
-        return ResponseEntity.ok().body(persionalExpensesService.updatePe(id, persionalExpensesRequest));
+    ApiResponse<PersionalExpensesResponse> updatePe(@PathVariable String id,
+                @RequestBody PersionalExpensesRequest PersionalExpensesRequest){
+        return ApiResponse.<PersionalExpensesResponse>builder()
+                .result(persionalExpensesService.updatePe(id, PersionalExpensesRequest))
+                .build();
     }
 
 }

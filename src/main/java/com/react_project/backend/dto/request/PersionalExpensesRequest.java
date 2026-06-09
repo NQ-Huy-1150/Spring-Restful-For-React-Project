@@ -17,7 +17,6 @@ public class PersionalExpensesRequest {
 
     String id;
 
-    //
     LocalDate month;
 
     Double totalIncome;

@@ -21,9 +21,18 @@ public class PersionalExpensesService {
     PersionalExpensesRepository persionalExpensesRepository;
     PersionalExpensesMapper persionalExpensesMapper;
 
-    public PersionalExpensesResponse createPe(PersionalExpensesRequest persionalExpensesRequest){
-        PersionalExpenses persionalExpenses = persionalExpensesMapper.toPe(persionalExpensesRequest);
-        return persionalExpensesMapper.toPeResponse(persionalExpensesRepository.save(persionalExpenses));
+    public PersionalExpensesResponse createPe(PersionalExpensesRequest request){
+        PersionalExpenses persionalExpenses = persionalExpensesMapper.toPe(request);
+        persionalExpenses.setRemaningAmount(
+                request.getTotalIncome() - request.getHouseCost() - request.getFoodCost()
+                - request.getTraveCost() - request.getOtherCost1()
+                - request.getOtherCost2() - request.getOtherCost3()
+                - request.getSavingAndInvestment()
+        );
+
+        persionalExpenses = persionalExpensesRepository.save(persionalExpenses);
+
+        return persionalExpensesMapper.toPeResponse(persionalExpenses);
     }
 
     public List<PersionalExpensesResponse> getAllPe(){

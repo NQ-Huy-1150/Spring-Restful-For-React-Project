@@ -18,16 +18,21 @@ import com.react_project.backend.repository.NotePadRepository;
 public class NotePadService {
     private final NotePadRepository notePadRepository;
     private final NotePadMapper mapper;
-    private CatalogService catalogService;
+    private final CatalogService catalogService;
+    private final CurrentUserService currentUserService;
 
-    public NotePadService(NotePadRepository notePadRepository, NotePadMapper mapper, CatalogService catalogService) {
+    public NotePadService(NotePadRepository notePadRepository, NotePadMapper mapper, CatalogService catalogService,
+            CurrentUserService currentUserService) {
         this.notePadRepository = notePadRepository;
         this.mapper = mapper;
         this.catalogService = catalogService;
+        this.currentUserService = currentUserService;
     }
 
     public List<NotePadResponse> fetchAllNotes() {
-        return this.notePadRepository.findAll().stream().map(mapper::toResponse).toList();
+        return this.notePadRepository.findAllByUser_Id(currentUserService.getCurrentUserId()).stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     public NotePadResponse createNote(NotePadDTO dto) {
@@ -36,8 +41,7 @@ public class NotePadService {
         note.setContent(dto.getContent());
         Date time = new Date();
         note.setCreatedAt(time);
-        User user = new User();
-        user.setId(1);
+        User user = currentUserService.getCurrentUser();
         note.setUser(user);
         if (dto.getCatalogId() != null) {
             Optional<Catalog> optional = this.catalogService.getCatalogById(dto.getCatalogId());
@@ -50,11 +54,11 @@ public class NotePadService {
     }
 
     public Optional<Note> getNoteById(int id) {
-        return this.notePadRepository.findById(id);
+        return this.notePadRepository.findByIdAndUser_Id(id, currentUserService.getCurrentUserId());
     }
 
     public void updateNotePad(NotePadDTO dto) {
-        Optional<Note> optional = getNoteById(dto.getId());
+        Optional<Note> optional = notePadRepository.findByIdAndUser_Id(dto.getId(), currentUserService.getCurrentUserId());
         Note note = optional.orElseThrow(() -> new RuntimeException("Note Id not found !" + dto.getId()));
         note.setTitle(dto.getTitle());
         note.setContent(dto.getContent());
@@ -71,14 +75,15 @@ public class NotePadService {
     }
 
     public boolean existedById(int id) {
-        return this.notePadRepository.existsById(id);
+        return this.notePadRepository.findByIdAndUser_Id(id, currentUserService.getCurrentUserId()).isPresent();
     }
 
     public boolean deleteNotePad(int id) {
-        if (!existedById(id)) {
+        Optional<Note> optional = notePadRepository.findByIdAndUser_Id(id, currentUserService.getCurrentUserId());
+        if (optional.isEmpty()) {
             return false;
         }
-        this.notePadRepository.deleteById(id);
+        this.notePadRepository.delete(optional.get());
         return true;
     }
 

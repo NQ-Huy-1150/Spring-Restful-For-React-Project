@@ -19,10 +19,12 @@ public class HousingExpenseService {
 
     HousingExpenseRepository housingExpenseRepository;
     HousingExpenseMapper housingExpenseMapper;
+    CurrentUserService currentUserService;
 
     public HousingExpenseResponse createHE(HousingExpenseRequest request){
 
         HousingExpense housingExpense = housingExpenseMapper.toHe(request);
+        housingExpense.setUser(currentUserService.getCurrentUser());
         calculateBills(housingExpense);
 
         housingExpenseRepository.save(housingExpense);
@@ -30,21 +32,29 @@ public class HousingExpenseService {
     }
 
     public List<HousingExpenseResponse> getAllHe(){
-        return housingExpenseRepository.findAll().stream().map(housingExpenseMapper ::toHeResponse).toList();
+        return housingExpenseRepository.findAllByUser_Id(currentUserService.getCurrentUserId()).stream()
+                .map(housingExpenseMapper ::toHeResponse)
+                .toList();
     }
 
     public HousingExpenseResponse findHeById(String idHe){
-        HousingExpense he = housingExpenseRepository.findById(idHe).orElseThrow(() -> new NullPointerException("don't find"));
+        HousingExpense he = housingExpenseRepository.findByIdAndUser_Id(idHe, currentUserService.getCurrentUserId())
+                .orElseThrow(() -> new NullPointerException("don't find"));
 
         return housingExpenseMapper.toHeResponse(he);
     }
 
     public void deleteHe(String idHe){
-        housingExpenseRepository.deleteById(idHe);
+        HousingExpense housingExpense = housingExpenseRepository.findByIdAndUser_Id(
+                idHe,
+                currentUserService.getCurrentUserId()).orElseThrow(() -> new NullPointerException("don't find"));
+        housingExpenseRepository.delete(housingExpense);
     }
 
     public HousingExpenseResponse updateHe(String idHe,HousingExpenseRequest request){
-        HousingExpense housingExpense = housingExpenseRepository.findById(idHe).orElseThrow(() -> new NullPointerException("don't find"));
+        HousingExpense housingExpense = housingExpenseRepository.findByIdAndUser_Id(
+                idHe,
+                currentUserService.getCurrentUserId()).orElseThrow(() -> new NullPointerException("don't find"));
 
         housingExpense.setMonth(request.getMonth());
         housingExpense.setHousePrice(request.getHousePrice());

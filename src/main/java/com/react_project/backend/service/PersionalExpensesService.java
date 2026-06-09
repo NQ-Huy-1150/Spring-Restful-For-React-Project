@@ -20,15 +20,12 @@ public class PersionalExpensesService {
 
     PersionalExpensesRepository persionalExpensesRepository;
     PersionalExpensesMapper persionalExpensesMapper;
+    CurrentUserService currentUserService;
 
     public PersionalExpensesResponse createPe(PersionalExpensesRequest request){
         PersionalExpenses persionalExpenses = persionalExpensesMapper.toPe(request);
-        persionalExpenses.setRemaningAmount(
-                request.getTotalIncome() - request.getHouseCost() - request.getFoodCost()
-                - request.getTraveCost() - request.getOtherCost1()
-                - request.getOtherCost2() - request.getOtherCost3()
-                - request.getSavingAndInvestment()
-        );
+        persionalExpenses.setUser(currentUserService.getCurrentUser());
+        calculateRemainingAmount(persionalExpenses);
 
         persionalExpenses = persionalExpensesRepository.save(persionalExpenses);
 
@@ -36,24 +33,59 @@ public class PersionalExpensesService {
     }
 
     public List<PersionalExpensesResponse> getAllPe(){
-        return persionalExpensesRepository.findAll().stream().map(persionalExpensesMapper ::toPeResponse).toList();
+        return persionalExpensesRepository.findAllByUser_Id(currentUserService.getCurrentUserId()).stream()
+                .map(persionalExpensesMapper ::toPeResponse)
+                .toList();
     }
 
     public PersionalExpensesResponse findPeById(String idPe){
-        PersionalExpenses persionalExpensese = persionalExpensesRepository.findById(idPe).orElseThrow(() -> new NullPointerException("don't find"));
+        PersionalExpenses persionalExpensese = persionalExpensesRepository.findByIdAndUser_Id(idPe, currentUserService.getCurrentUserId())
+                .orElseThrow(() -> new NullPointerException("don't find"));
 
         return persionalExpensesMapper.toPeResponse(persionalExpensese);
     }
 
     public void deletePe(String idPe){
-        persionalExpensesRepository.deleteById(idPe);
+        PersionalExpenses persionalExpenses = persionalExpensesRepository.findByIdAndUser_Id(
+                idPe,
+                currentUserService.getCurrentUserId()).orElseThrow(() -> new NullPointerException("don't find"));
+        persionalExpensesRepository.delete(persionalExpenses);
     }
 
     @Transactional
     public PersionalExpensesResponse updatePe(String idPe,PersionalExpensesRequest persionalExpensesRequest){
-        PersionalExpenses persionalExpenses = persionalExpensesRepository.findById(idPe).orElseThrow(() -> new NullPointerException("don't find"));
-        persionalExpenses = persionalExpensesMapper.toPe(persionalExpensesRequest);
+        PersionalExpenses persionalExpenses = persionalExpensesRepository.findByIdAndUser_Id(
+                idPe,
+                currentUserService.getCurrentUserId()).orElseThrow(() -> new NullPointerException("don't find"));
+
+        persionalExpenses.setMonth(persionalExpensesRequest.getMonth());
+        persionalExpenses.setTotalIncome(persionalExpensesRequest.getTotalIncome());
+        persionalExpenses.setHouseCost(persionalExpensesRequest.getHouseCost());
+        persionalExpenses.setFoodCost(persionalExpensesRequest.getFoodCost());
+        persionalExpenses.setTraveCost(persionalExpensesRequest.getTraveCost());
+        persionalExpenses.setOtherCost1(persionalExpensesRequest.getOtherCost1());
+        persionalExpenses.setOtherCost2(persionalExpensesRequest.getOtherCost2());
+        persionalExpenses.setOtherCost3(persionalExpensesRequest.getOtherCost3());
+        persionalExpenses.setSavingAndInvestment(persionalExpensesRequest.getSavingAndInvestment());
+        calculateRemainingAmount(persionalExpenses);
+
         return persionalExpensesMapper.toPeResponse(persionalExpensesRepository.save(persionalExpenses));
+    }
+
+    private void calculateRemainingAmount(PersionalExpenses persionalExpenses) {
+        persionalExpenses.setRemaningAmount(
+                toDouble(persionalExpenses.getTotalIncome())
+                        - toDouble(persionalExpenses.getHouseCost())
+                        - toDouble(persionalExpenses.getFoodCost())
+                        - toDouble(persionalExpenses.getTraveCost())
+                        - toDouble(persionalExpenses.getOtherCost1())
+                        - toDouble(persionalExpenses.getOtherCost2())
+                        - toDouble(persionalExpenses.getOtherCost3())
+                        - toDouble(persionalExpenses.getSavingAndInvestment()));
+    }
+
+    private double toDouble(Double value) {
+        return value == null ? 0 : value;
     }
 
 }

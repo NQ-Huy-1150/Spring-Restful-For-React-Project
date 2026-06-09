@@ -1,21 +1,14 @@
 package com.react_project.backend.controller;
 
-import com.react_project.backend.dto.request.HousingExpenseRequest;
 import com.react_project.backend.dto.request.UserRequest;
 import com.react_project.backend.dto.response.ApiResponse;
-import com.react_project.backend.dto.response.HousingExpenseResponse;
 import com.react_project.backend.dto.response.UserResponse;
-import com.react_project.backend.entity.User;
-import com.react_project.backend.service.HousingExpenseService;
 import com.react_project.backend.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -48,8 +41,22 @@ public class UserController {
                 .build();
     }
 
-        @GetMapping("{id}")
-        public ApiResponse getMyInfor(@PathVariable int id){
+    @GetMapping("/me")
+    public ApiResponse<UserResponse> getCurrentUserProfile(){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getCurrentUserProfile())
+                .build();
+    }
+
+    @PutMapping("/me")
+    public ApiResponse<UserResponse> updateCurrentUserProfile(@RequestBody UserRequest userRequest){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateCurrentUserProfile(userRequest))
+                .build();
+    }
+
+    @GetMapping("{id}")
+    public ApiResponse getMyInfor(@PathVariable int id){
         return ApiResponse.builder()
                 .result(userService.getMyInfor(id))
                 .build();

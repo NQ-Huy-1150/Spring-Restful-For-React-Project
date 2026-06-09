@@ -90,12 +90,13 @@ public class TodoListService {
             currentList.setTitle(todoListDTO.getTitle());
             Date time = new Date();
             currentList.setUpdatedAt(time);
-            if (todoListDTO.getCatalogId() != null) {
+            if (todoListDTO.getCatalogId() == null) {
+                currentList.setCatalog(null);
+            } else {
                 Optional<Catalog> cataOptional = this.catalogService.getCatalogById(todoListDTO.getCatalogId());
-                if (cataOptional.isPresent()) {
-                    Catalog cata = cataOptional.get();
-                    currentList.setCatalog(cata);
-                }
+                Catalog cata = cataOptional.orElseThrow(
+                        () -> new RuntimeException("Catalog Id not found !" + todoListDTO.getCatalogId()));
+                currentList.setCatalog(cata);
             }
             for (Todo existing : currentList.getTodos()) {
                 for (TodoUpdateDTO dto : incomingTodos) {

@@ -16,28 +16,31 @@ import com.react_project.backend.repository.CatalogRepository;
 public class CatalogService {
     private final CatalogRepository catalogRepository;
     private final CatalogMapper mapper;
+    private final CurrentUserService currentUserService;
 
-    public CatalogService(CatalogRepository catalogRepository, CatalogMapper mapper) {
+    public CatalogService(CatalogRepository catalogRepository, CatalogMapper mapper,
+            CurrentUserService currentUserService) {
         this.catalogRepository = catalogRepository;
         this.mapper = mapper;
+        this.currentUserService = currentUserService;
     }
 
     public List<Catalog> fetchAllCatalog() {
-        return this.catalogRepository.findAll();
+        return this.catalogRepository.findAllByUser_Id(currentUserService.getCurrentUserId());
     }
 
     public List<CatalogResponse> fetchAllCatalogResponses() {
-        return this.catalogRepository.findAll().stream()
+        return this.catalogRepository.findAllByUser_Id(currentUserService.getCurrentUserId()).stream()
                 .map(mapper::toResponse)
                 .toList();
     }
 
     public Optional<Catalog> getCatalogById(int id) {
-        return this.catalogRepository.findById(id);
+        return this.catalogRepository.findByIdAndUser_Id(id, currentUserService.getCurrentUserId());
     }
 
     public boolean isCatalogExisted(int id) {
-        return this.catalogRepository.existsById(id);
+        return this.catalogRepository.existsByIdAndUser_Id(id, currentUserService.getCurrentUserId());
     }
 
     public boolean deleteCatalogById(int id) {
@@ -50,7 +53,8 @@ public class CatalogService {
 
     public CatalogResponse createCatalog(CatalogDTO dto) {
         Catalog cata = new Catalog();
-        cata.setTitle(dto.getTitle());
+        cata.setTitle(dto.getTitle() == null || dto.getTitle().trim().isEmpty() ? "Untitled" : dto.getTitle().trim());
+        cata.setUser(currentUserService.getCurrentUser());
         cata = this.catalogRepository.save(cata);
         return mapper.toResponse(cata);
     }

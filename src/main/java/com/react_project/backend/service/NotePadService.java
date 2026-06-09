@@ -64,8 +64,9 @@ public class NotePadService {
         note.setContent(dto.getContent());
         Date time = new Date();
         note.setUpdatedAt(time);
-        if (dto.getCatalogId() != null
-                && (note.getCatalog() != null ? note.getCatalog().getId() : null) != dto.getCatalogId()) {
+        if (dto.getCatalogId() == null) {
+            note.setCatalog(null);
+        } else if (!dto.getCatalogId().equals(note.getCatalog() != null ? note.getCatalog().getId() : null)) {
             Optional<Catalog> cataOptional = this.catalogService.getCatalogById(dto.getCatalogId());
             Catalog cata = cataOptional.orElseThrow(
                     () -> new RuntimeException("Catalog Id not found !" + dto.getCatalogId()));

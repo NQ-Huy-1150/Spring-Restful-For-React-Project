@@ -23,6 +23,8 @@ public class UserRequest {
 
     private String lastName;
 
+    private String fullName;
+
 
     @Email(message = "Email không hợp lệ !", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;

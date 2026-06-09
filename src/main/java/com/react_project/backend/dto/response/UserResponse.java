@@ -1,7 +1,5 @@
 package com.react_project.backend.dto.response;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +14,7 @@ public class UserResponse {
 
     private int id;
     private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String email;
     private String phoneNumber;
 

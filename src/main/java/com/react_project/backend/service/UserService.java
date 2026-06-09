@@ -21,6 +21,7 @@ public class UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    CurrentUserService currentUserService;
 
 
     public UserResponse createUser(UserRequest userRequest){
@@ -37,8 +38,18 @@ public class UserService {
 
     public UserResponse updateUser(int id,UserRequest userRequest){
         User user = userRepository.findById(id).orElseThrow(() -> new NullPointerException("don't find"));
-        user = userMapper.toUser(userRequest);
-        user.setAdmin(false);
+        applyEditableProfileFields(user, userRequest);
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
+    }
+
+    public UserResponse getCurrentUserProfile() {
+        return userMapper.toUserResponse(currentUserService.getCurrentUser());
+    }
+
+    public UserResponse updateCurrentUserProfile(UserRequest userRequest) {
+        User user = currentUserService.getCurrentUser();
+        applyEditableProfileFields(user, userRequest);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
@@ -59,7 +70,7 @@ public class UserService {
         User user = new User();
         user.setAdmin(false);
         user.setEmail(userRequest.getEmail());
-        user.setFullName(userRequest.getFirstName() + userRequest.getLastName());
+        user.setFullName(resolveFullName(userRequest));
         user.setPhoneNumber(userRequest.getPhoneNumber());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
@@ -73,6 +84,37 @@ public class UserService {
 
     public boolean isEmailExisted(String email) {
         return this.userRepository.existsByEmail(email);
+    }
+
+    private void applyEditableProfileFields(User user, UserRequest userRequest) {
+        if (userRequest == null) {
+            throw new IllegalArgumentException("UserRequest must not be null");
+        }
+
+        user.setFullName(resolveFullName(userRequest));
+        user.setPhoneNumber(trimToNull(userRequest.getPhoneNumber()));
+    }
+
+    private String resolveFullName(UserRequest userRequest) {
+        String fullName = trimToNull(userRequest.getFullName());
+        if (fullName != null) {
+            return fullName;
+        }
+
+        String firstName = trimToEmpty(userRequest.getFirstName());
+        String lastName = trimToEmpty(userRequest.getLastName());
+        return (firstName + " " + lastName).trim();
+    }
+
+    private String trimToNull(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        return value.trim();
+    }
+
+    private String trimToEmpty(String value) {
+        return value == null ? "" : value.trim();
     }
 
 }

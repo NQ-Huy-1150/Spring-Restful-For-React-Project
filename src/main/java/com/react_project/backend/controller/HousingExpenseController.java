@@ -8,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +18,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/housings")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HousingExpenseController {
 
     HousingExpenseService housingExpenseService;
 
     @PostMapping()
-    public ApiResponse<HousingExpenseResponse> createHe(@RequestBody HousingExpenseRequest housingExpenseRequest){
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ApiResponse<HousingExpenseResponse> createHe(@RequestBody HousingExpenseRequest housingExpenseRequest) {
         return ApiResponse.<HousingExpenseResponse>builder()
                 .result(housingExpenseService.createHE(housingExpenseRequest))
                 .build();
     }
 
     @GetMapping()
-    public ApiResponse<List<HousingExpenseResponse>> getAllHe(){
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ApiResponse<List<HousingExpenseResponse>> getAllHe() {
         return ApiResponse.<List<HousingExpenseResponse>>builder()
                 .result(housingExpenseService.getAllHe())
                 .build();
     }
 
     @DeleteMapping("{id}")
-    public ApiResponse<String> deleteHe(@PathVariable String id){
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ApiResponse<String> deleteHe(@PathVariable String id) {
         housingExpenseService.deleteHe(id);
         return ApiResponse.<String>builder()
                 .result("Delete successfully")
@@ -44,9 +49,11 @@ public class HousingExpenseController {
     }
 
     @PutMapping("{id}")
-    public ApiResponse<HousingExpenseResponse> updateHe(@PathVariable String id, @RequestBody HousingExpenseRequest housingExpenseRequest){
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ApiResponse<HousingExpenseResponse> updateHe(@PathVariable String id,
+            @RequestBody HousingExpenseRequest housingExpenseRequest) {
         return ApiResponse.<HousingExpenseResponse>builder()
-                .result(housingExpenseService.updateHe(id,housingExpenseRequest))
+                .result(housingExpenseService.updateHe(id, housingExpenseRequest))
                 .build();
     }
 

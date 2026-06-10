@@ -1,7 +1,12 @@
 package com.react_project.backend.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginRequest {
+    @NotBlank(message = "Username must not be blank")
     private String username;
+
+    @NotBlank(message = "Password must not be blank")
     private String password;
 
     public String getUsername() {

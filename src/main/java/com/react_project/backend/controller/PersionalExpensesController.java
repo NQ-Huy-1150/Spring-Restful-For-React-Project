@@ -8,12 +8,16 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 @Slf4j
 @RestController
+@Validated
 @RequestMapping("/persionalexpensives")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -24,7 +28,7 @@ public class PersionalExpensesController {
 
     @PostMapping()
     @CrossOrigin(origins = "http://localhost:5173")
-    ApiResponse<PersionalExpensesResponse> createPe(@RequestBody PersionalExpensesRequest request) {
+    ApiResponse<PersionalExpensesResponse> createPe(@Valid @RequestBody PersionalExpensesRequest request) {
         return ApiResponse.<PersionalExpensesResponse>builder()
                 .result(persionalExpensesService.createPe(request))
                 .build();
@@ -50,7 +54,7 @@ public class PersionalExpensesController {
     @PutMapping("{id}")
     @CrossOrigin(origins = "http://localhost:5173")
     ApiResponse<PersionalExpensesResponse> updatePe(@PathVariable String id,
-            @RequestBody PersionalExpensesRequest PersionalExpensesRequest) {
+            @Valid @RequestBody PersionalExpensesRequest PersionalExpensesRequest) {
         return ApiResponse.<PersionalExpensesResponse>builder()
                 .result(persionalExpensesService.updatePe(id, PersionalExpensesRequest))
                 .build();

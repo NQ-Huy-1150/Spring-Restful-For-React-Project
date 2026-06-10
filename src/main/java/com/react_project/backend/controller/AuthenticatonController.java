@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.react_project.backend.entity.User;
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.validation.Valid;
+
 @RestController
+@Validated
 @RequestMapping("/api/v1/auth")
 public class AuthenticatonController {
     private final AuthenticationManager authenticationManager;
@@ -38,7 +42,7 @@ public class AuthenticatonController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -54,7 +58,7 @@ public class AuthenticatonController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRequest userRequest) {
         if (this.userService.isUsernameExited(userRequest.getUsername())) {
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("username is already taken!"));

@@ -1,6 +1,7 @@
 package com.react_project.backend.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,10 @@ import com.react_project.backend.dto.response.MessageResponse;
 import com.react_project.backend.dto.response.NotePadResponse;
 import com.react_project.backend.service.NotePadService;
 
+import jakarta.validation.Valid;
+
 @RestController
+@Validated
 @RequestMapping("/api/v1/note")
 public class NotePadController {
     private final NotePadService notePadService;
@@ -33,14 +37,14 @@ public class NotePadController {
 
     @PostMapping("/create-notepad")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> getCreateNote(@RequestBody NotePadDTO dto) {
+    public ResponseEntity<?> getCreateNote(@Valid @RequestBody NotePadDTO dto) {
         NotePadResponse response = this.notePadService.createNote(dto);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update-notepad")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> getUpdateNote(@RequestBody NotePadDTO dto) {
+    public ResponseEntity<?> getUpdateNote(@Valid @RequestBody NotePadDTO dto) {
         if (this.notePadService.existedById(dto.getId())) {
             this.notePadService.updateNotePad(dto);
             return ResponseEntity.ok(new MessageResponse("Updated successfully !"));

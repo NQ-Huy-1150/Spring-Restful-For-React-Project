@@ -9,13 +9,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 @Slf4j
 @RestController
+@Validated
 @RequestMapping("/housings")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -25,7 +28,7 @@ public class HousingExpenseController {
 
     @PostMapping()
     @CrossOrigin(origins = "http://localhost:5173")
-    public ApiResponse<HousingExpenseResponse> createHe(@RequestBody HousingExpenseRequest housingExpenseRequest) {
+    public ApiResponse<HousingExpenseResponse> createHe(@Valid @RequestBody HousingExpenseRequest housingExpenseRequest) {
         return ApiResponse.<HousingExpenseResponse>builder()
                 .result(housingExpenseService.createHE(housingExpenseRequest))
                 .build();
@@ -51,7 +54,7 @@ public class HousingExpenseController {
     @PutMapping("{id}")
     @CrossOrigin(origins = "http://localhost:5173")
     public ApiResponse<HousingExpenseResponse> updateHe(@PathVariable String id,
-            @RequestBody HousingExpenseRequest housingExpenseRequest) {
+            @Valid @RequestBody HousingExpenseRequest housingExpenseRequest) {
         return ApiResponse.<HousingExpenseResponse>builder()
                 .result(housingExpenseService.updateHe(id, housingExpenseRequest))
                 .build();

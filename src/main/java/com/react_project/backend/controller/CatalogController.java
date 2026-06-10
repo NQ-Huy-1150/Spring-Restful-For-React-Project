@@ -1,6 +1,7 @@
 package com.react_project.backend.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,10 @@ import com.react_project.backend.dto.request.CatalogUpdateDTO;
 import com.react_project.backend.dto.response.MessageResponse;
 import com.react_project.backend.service.CatalogService;
 
+import jakarta.validation.Valid;
+
 @RestController
+@Validated
 @RequestMapping("/api/v1/catalog")
 public class CatalogController {
     private final CatalogService catalogService;
@@ -41,13 +45,13 @@ public class CatalogController {
 
     @PostMapping("/create-catalog")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> getCreateCatalog(@RequestBody CatalogDTO dto) {
+    public ResponseEntity<?> getCreateCatalog(@Valid @RequestBody CatalogDTO dto) {
         return ResponseEntity.ok(this.catalogService.createCatalog(dto));
     }
 
     @PostMapping("/update-catalog")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> getupdateCatalog(@RequestBody CatalogUpdateDTO dto) {
+    public ResponseEntity<?> getupdateCatalog(@Valid @RequestBody CatalogUpdateDTO dto) {
         this.catalogService.updateCatalog(dto);
         return ResponseEntity.ok(new MessageResponse("update successfully!"));
     }

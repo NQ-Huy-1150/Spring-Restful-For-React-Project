@@ -27,7 +27,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import jakarta.validation.Valid;
+
 @RestController
+@Validated
 @RequestMapping("/api/v1")
 public class TodoListPageController {
 
@@ -39,7 +42,7 @@ public class TodoListPageController {
 
     @PostMapping("/create-todolist")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> createTodolist(@Validated @RequestBody TodoListDTO todoListDTO) {
+    public ResponseEntity<?> createTodolist(@Valid @RequestBody TodoListDTO todoListDTO) {
         System.out.println(todoListDTO.getId() + todoListDTO.getTitle() + todoListDTO.getCreatedAt() + "CATALOG ID "
                 + todoListDTO.getCatalogId());
         TodoList savedTodoList = this.todoListService.handleSaveTodoList(todoListDTO);
@@ -104,7 +107,7 @@ public class TodoListPageController {
 
     @PutMapping("/modify-todolist")
     @CrossOrigin(origins = "http://localhost:5173")
-    public ResponseEntity<?> modifyTodolist(@Validated @RequestBody TodolistUpdateDTO todoListDTO) {
+    public ResponseEntity<?> modifyTodolist(@Valid @RequestBody TodolistUpdateDTO todoListDTO) {
         System.out.println(todoListDTO.getId() + todoListDTO.getTitle() + todoListDTO.getCreatedAt() + "CATALOG ID "
                 + todoListDTO.getCatalogId());
         if (this.todoListService.isExistedById(todoListDTO.getId())) {

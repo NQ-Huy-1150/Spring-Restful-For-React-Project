@@ -8,10 +8,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController
+@Validated
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
@@ -20,7 +24,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping()
-    public ApiResponse<UserResponse> createUser(@RequestBody UserRequest userRequest){
+    public ApiResponse<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.createUser(userRequest))
                 .build();
@@ -35,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public ApiResponse updateUser(@PathVariable int id, @RequestBody UserRequest userRequest){
+    public ApiResponse updateUser(@PathVariable int id, @Valid @RequestBody UserRequest userRequest){
         return ApiResponse.builder()
                 .result(userService.updateUser(id, userRequest))
                 .build();

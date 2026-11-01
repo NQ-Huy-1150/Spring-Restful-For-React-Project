@@ -37,7 +37,8 @@ pipeline {
             steps {
                 withCredentials([
                      string(credentialsId: 'db-password', variable: 'DB_PASSWORD'),
-                     string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET')
+                     string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET'),
+                     string(credentialsId: 'db-root-password', variable: 'DB_ROOT_PASSWORD')
                 ])
                 {
                     sh 'docker compose up -d --build'

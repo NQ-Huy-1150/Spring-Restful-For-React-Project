@@ -19,7 +19,7 @@ services:
       MYSQL_DATABASE: life_manager
       MYSQL_USER: lifeapp
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-${DB_PASSWORD}}
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:

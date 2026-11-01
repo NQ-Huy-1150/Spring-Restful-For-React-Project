@@ -1,10 +1,6 @@
 pipeline {
-    agent {
-     docker {
-            image 'maven:3.9-eclipse-temurin-21'
-        }
-     }
-     triggers {
+    agent none
+    triggers {
         GenericTrigger(
             genericVariables: [
                 [key: 'ref', value: '$.ref'],
@@ -17,28 +13,34 @@ pipeline {
             printContributedVariables: true,
             printPostContent: false
         )
-     }
-     environment {
+    }
+    environment {
         COMPOSE_PROJECT_NAME = 'life-manager'
-     }
+    }
     options {
         timeout(time: 15, unit: 'MINUTES')
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
     stages {
         stage('Test') {
+            agent {
+                docker {
+                    image 'maven:3.9-eclipse-temurin-21'
+                }
+            }
             steps {
                 sh 'mvn -B verify'
             }
         }
         stage('Deploy') {
+            agent any
             steps {
                 withCredentials([
                      string(credentialsId: 'db-password', variable: 'DB_PASSWORD'),
                      string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET')
                 ])
                 {
-                    sh 'docker compose up -d'
+                    sh 'docker compose up -d --build'
                 }
             }
         }

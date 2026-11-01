@@ -33,7 +33,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            agent any
             steps {
                 withCredentials([
                      string(credentialsId: 'db-password', variable: 'DB_PASSWORD'),

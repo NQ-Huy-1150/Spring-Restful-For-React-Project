@@ -9,7 +9,7 @@ RUN mvn -B package -DskipTests
 #STAGE: RUN
 FROM docker.io/library/eclipse-temurin:21-jre
 WORKDIR /app
-RUN useradd  -r -u 001 appuser
+RUN useradd  -r -u 988 appuser
 COPY --from=build /app/target/*.jar app.jar
 USER appuser
 EXPOSE 8881
